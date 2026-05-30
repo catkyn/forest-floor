@@ -52,7 +52,7 @@ body {
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  padding: clamp(0.85rem, 4vw, 2rem);
+  padding: clamp(0.65rem, 3vw, 1.5rem);
   background: var(--bg);
   text-align: center;
 }
@@ -61,14 +61,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: baseline;
-  gap: clamp(0.35rem, 1.5vw, 0.85rem);
+  gap: clamp(0.3rem, 1.2vw, 0.7rem);
   width: 100%;
   min-width: 0;
 }
 
 .time {
   font-family: "Playfair Display", serif;
-  font-size: clamp(2.7rem, 18vw, 6.6rem);
+  font-size: clamp(1.8rem, 10vw, 4rem);
   line-height: 0.95;
   letter-spacing: -0.055em;
   font-weight: 600;
@@ -77,7 +77,7 @@ body {
 }
 
 .seconds {
-  font-size: clamp(0.85rem, 4vw, 1.45rem);
+  font-size: clamp(0.7rem, 2.5vw, 1rem);
   font-weight: 600;
   color: var(--support);
   min-width: 2ch;
@@ -85,28 +85,28 @@ body {
 }
 
 .date {
-  margin-top: clamp(0.35rem, 1.5vw, 0.6rem);
-  font-size: clamp(0.85rem, 3.8vw, 1.15rem);
+  margin-top: 1.3rem;
+  font-size: clamp(1.1rem, 2.2vw, 0.95rem);
   line-height: 1.4;
   color: var(--support);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .moon-section {
-  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  margin-top: clamp(1.4rem, 4vw, 2.3rem);
 }
 
 .moon-svg {
-  width: clamp(3rem, 10vw, 4.5rem);
+  width: clamp(2.5rem, 8vw, 4rem);
   max-width: 100%;
   height: auto;
   display: block;
-  margin: 0 auto 1rem;
+  margin: 0 auto 0.85rem;
 }
 
 .phase-title {
   font-family: "Playfair Display", serif;
-  font-size: clamp(1.1rem, 4vw, 1.75rem);
+  font-size: clamp(1rem, 3.5vw, 1.5rem);
   line-height: 1.1;
   font-weight: 600;
   color: var(--heading);
@@ -114,39 +114,45 @@ body {
 }
 
 .keyword {
-  margin-top: 0.6rem;
+  margin-top: 0.55rem;
   font-size: clamp(0.65rem, 1.8vw, 0.8rem);
   line-height: 1.4;
   letter-spacing: 0.16em;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--support);
 }
 
+.meaning,
+.focus,
+.special-note {
+  width: min(100%, 32rem);
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .meaning {
-  width: min(100%, 34rem);
-  margin: 0.5rem auto 0;
+  margin-top: 0.45rem;
   font-size: clamp(0.8rem, 2vw, 0.95rem);
   line-height: 1.5;
 }
 
 .focus {
-  width: min(100%, 34rem);
-  margin: 0.5rem auto 0;
+  margin-top: 0.45rem;
   font-size: clamp(0.75rem, 1.9vw, 0.9rem);
   line-height: 1.5;
   color: var(--support);
 }
 
 .special {
-  width: min(100%, 34rem);
-  margin: 1.25rem auto 0;
-  padding-top: 0.9rem;
+  width: min(100%, 32rem);
+  margin: 1.15rem auto 0;
+  padding-top: 0.85rem;
   border-top: 1px solid var(--special);
   color: var(--special);
 }
 
 .special-title {
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: clamp(0.7rem, 1.8vw, 0.8rem);
@@ -157,23 +163,38 @@ body {
   font-size: clamp(0.75rem, 1.9vw, 0.9rem);
   line-height: 1.5;
 }
-}
 
-@media (max-width: 360px) {
+@media (max-width: 420px) {
   .widget {
-    padding: 0.75rem;
+    padding: 0.65rem;
   }
 
   .time {
-    font-size: clamp(2.35rem, 17vw, 3.2rem);
+    font-size: clamp(1.65rem, 13vw, 3rem);
   }
 
   .seconds {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+  }
+
+  .date {
+    font-size: 0.75rem;
   }
 
   .moon-section {
-    margin-top: 1.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .moon-svg {
+    width: 2.75rem;
+  }
+
+  .meaning {
+    font-size: 0.78rem;
+  }
+
+  .focus {
+    font-size: 0.74rem;
   }
 }
 </style>
@@ -329,9 +350,11 @@ function moonSVG(phase) {
           <circle cx="50" cy="50" r="39" />
         </clipPath>
       </defs>
+
       <g clip-path="url(#moonClip)">
         ${shapes[phase]}
       </g>
+
       <circle cx="50" cy="50" r="39" fill="none" stroke="var(--moon)" stroke-width="1.5" opacity="0.55" />
     </svg>
   `;
@@ -401,4 +424,3 @@ setInterval(updateMoon, 60 * 60 * 1000);
 </script>
 </body>
 </html>
-
