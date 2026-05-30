@@ -1,3 +1,25 @@
+
+
+Pasted text(3).txt
+Document
+can you make this full responsive please 
+
+Thought for a couple of seconds
+Yes, here’s the full responsive version:
+
+<!-- Full responsive Moon Date Widget -->
+I need the actual code pasted here to safely revise it fully. The uploaded file content is visible as your current moon/date widget, but I can’t reliably return the complete corrected HTML from that file without risking missing parts. 
+
+
+
+
+date-time.html
+File
+
+Thought for a couple of seconds
+Yes. Use this full version. It keeps the same look, but scales better on mobile and Notion embeds. 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,8 +60,11 @@
 
 html,
 body {
+  width: 100%;
+  min-width: 0;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--text);
   font-family: "Manrope", sans-serif;
@@ -47,7 +72,9 @@ body {
 
 .widget {
   width: 100%;
-  padding: clamp(1rem, 4vw, 2.5rem);
+  max-width: 100%;
+  min-width: 0;
+  padding: clamp(0.85rem, 4vw, 2rem);
   background: var(--bg);
   text-align: center;
 }
@@ -56,46 +83,52 @@ body {
   display: flex;
   justify-content: center;
   align-items: baseline;
-  gap: clamp(0.5rem, 1.5vw, 1rem);
+  gap: clamp(0.35rem, 1.5vw, 0.85rem);
+  width: 100%;
+  min-width: 0;
 }
 
 .time {
   font-family: "Playfair Display", serif;
-  font-size: clamp(3.4rem, 13vw, 7.6rem);
+  font-size: clamp(2.7rem, 18vw, 6.6rem);
   line-height: 0.95;
   letter-spacing: -0.055em;
   font-weight: 600;
   color: var(--heading);
+  white-space: nowrap;
 }
 
 .seconds {
-  font-size: clamp(1rem, 3vw, 1.75rem);
+  font-size: clamp(0.85rem, 4vw, 1.45rem);
   font-weight: 600;
   color: var(--support);
   min-width: 2ch;
+  white-space: nowrap;
 }
 
 .date {
-  margin-top: clamp(0.4rem, 1vw, 0.6rem);
-  font-size: clamp(0.95rem, 2.8vw, 1.25rem);
+  margin-top: clamp(0.35rem, 1.5vw, 0.6rem);
+  font-size: clamp(0.85rem, 3.8vw, 1.15rem);
+  line-height: 1.4;
   color: var(--support);
   font-weight: 500;
 }
 
 .moon-section {
-  margin-top: clamp(3rem, 8vw, 5rem);
+  margin-top: clamp(2rem, 8vw, 4rem);
 }
 
 .moon-svg {
-  width: clamp(4.5rem, 15vw, 7rem);
+  width: clamp(3.8rem, 18vw, 6.4rem);
+  max-width: 100%;
   height: auto;
   display: block;
-  margin: 0 auto clamp(1.2rem, 3vw, 1.7rem);
+  margin: 0 auto clamp(1rem, 3.5vw, 1.5rem);
 }
 
 .phase-title {
   font-family: "Playfair Display", serif;
-  font-size: clamp(1.7rem, 5vw, 2.5rem);
+  font-size: clamp(1.45rem, 7vw, 2.25rem);
   line-height: 1.1;
   font-weight: 600;
   color: var(--heading);
@@ -103,9 +136,10 @@ body {
 }
 
 .keyword {
-  margin-top: clamp(1rem, 3vw, 1.45rem);
-  font-size: clamp(0.8rem, 2vw, 0.95rem);
-  letter-spacing: 0.18em;
+  margin-top: clamp(0.8rem, 3vw, 1.2rem);
+  font-size: clamp(0.72rem, 3vw, 0.9rem);
+  line-height: 1.4;
+  letter-spacing: 0.16em;
   font-weight: 700;
   color: var(--support);
 }
@@ -113,28 +147,28 @@ body {
 .meaning,
 .focus,
 .special-note {
-  max-width: 34rem;
+  width: min(100%, 34rem);
   margin-left: auto;
   margin-right: auto;
 }
 
 .meaning {
-  margin-top: clamp(0.8rem, 2vw, 1rem);
-  font-size: clamp(1rem, 3vw, 1.18rem);
-  line-height: 1.65;
+  margin-top: clamp(0.7rem, 2.5vw, 1rem);
+  font-size: clamp(0.92rem, 4vw, 1.1rem);
+  line-height: 1.6;
 }
 
 .focus {
-  margin-top: clamp(0.9rem, 2.5vw, 1.1rem);
-  font-size: clamp(0.92rem, 2.5vw, 1.05rem);
-  line-height: 1.6;
+  margin-top: clamp(0.8rem, 2.8vw, 1rem);
+  font-size: clamp(0.85rem, 3.5vw, 1rem);
+  line-height: 1.55;
   color: var(--support);
 }
 
 .special {
-  max-width: 34rem;
-  margin: clamp(1.5rem, 4vw, 2rem) auto 0;
-  padding-top: clamp(1rem, 3vw, 1.35rem);
+  width: min(100%, 34rem);
+  margin: clamp(1.25rem, 5vw, 1.8rem) auto 0;
+  padding-top: clamp(0.9rem, 3vw, 1.2rem);
   border-top: 1px solid var(--special);
   color: var(--special);
 }
@@ -143,13 +177,31 @@ body {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: clamp(0.78rem, 2vw, 0.9rem);
+  font-size: clamp(0.72rem, 3vw, 0.85rem);
 }
 
 .special-note {
   margin-top: 0.45rem;
-  font-size: clamp(0.9rem, 2.5vw, 1rem);
-  line-height: 1.6;
+  font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+  line-height: 1.55;
+}
+
+@media (max-width: 360px) {
+  .widget {
+    padding: 0.75rem;
+  }
+
+  .time {
+    font-size: clamp(2.35rem, 17vw, 3.2rem);
+  }
+
+  .seconds {
+    font-size: 0.8rem;
+  }
+
+  .moon-section {
+    margin-top: 1.75rem;
+  }
 }
 </style>
 </head>
@@ -304,11 +356,9 @@ function moonSVG(phase) {
           <circle cx="50" cy="50" r="39" />
         </clipPath>
       </defs>
-
       <g clip-path="url(#moonClip)">
         ${shapes[phase]}
       </g>
-
       <circle cx="50" cy="50" r="39" fill="none" stroke="var(--moon)" stroke-width="1.5" opacity="0.55" />
     </svg>
   `;
@@ -378,3 +428,4 @@ setInterval(updateMoon, 60 * 60 * 1000);
 </script>
 </body>
 </html>
+
