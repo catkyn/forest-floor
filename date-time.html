@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Moon Date Widget</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #24342F;
+  --heading: #18231F;
+  --support: #7E8B56;
+  --moon: #D79A22;
+  --special: #18646D;
+  --shadow: #24342F;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #191919;
+    --text: #FAF6EF;
+    --heading: #FAF6EF;
+    --support: #DDE3CC;
+    --moon: #E8C36A;
+    --special: #6F9DA1;
+    --shadow: #18231F;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Manrope", sans-serif;
+}
+
+.widget {
+  width: 100%;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  background: var(--bg);
+  text-align: center;
+}
+
+.time-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+}
+
+.time {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(3.4rem, 13vw, 7.6rem);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+.seconds {
+  font-size: clamp(1rem, 3vw, 1.75rem);
+  font-weight: 600;
+  color: var(--support);
+  min-width: 2ch;
+}
+
+.date {
+  margin-top: clamp(0.4rem, 1vw, 0.6rem);
+  font-size: clamp(0.95rem, 2.8vw, 1.25rem);
+  color: var(--support);
+  font-weight: 500;
+}
+
+.moon-section {
+  margin-top: clamp(3rem, 8vw, 5rem);
+}
+
+.moon-svg {
+  width: clamp(4.5rem, 15vw, 7rem);
+  height: auto;
+  display: block;
+  margin: 0 auto clamp(1.2rem, 3vw, 1.7rem);
+}
+
+.phase-title {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.7rem, 5vw, 2.5rem);
+  line-height: 1.1;
+  font-weight: 600;
+  color: var(--heading);
+  margin: 0;
+}
+
+.keyword {
+  margin-top: clamp(1rem, 3vw, 1.45rem);
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: var(--support);
+}
+
+.meaning,
+.focus,
+.special-note {
+  max-width: 34rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.meaning {
+  margin-top: clamp(0.8rem, 2vw, 1rem);
+  font-size: clamp(1rem, 3vw, 1.18rem);
+  line-height: 1.65;
+}
+
+.focus {
+  margin-top: clamp(0.9rem, 2.5vw, 1.1rem);
+  font-size: clamp(0.92rem, 2.5vw, 1.05rem);
+  line-height: 1.6;
+  color: var(--support);
+}
+
+.special {
+  max-width: 34rem;
+  margin: clamp(1.5rem, 4vw, 2rem) auto 0;
+  padding-top: clamp(1rem, 3vw, 1.35rem);
+  border-top: 1px solid var(--special);
+  color: var(--special);
+}
+
+.special-title {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: clamp(0.78rem, 2vw, 0.9rem);
+}
+
+.special-note {
+  margin-top: 0.45rem;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+<main class="widget">
+  <section>
+    <div class="time-wrap">
+      <div class="time" id="time">00:00</div>
+      <div class="seconds" id="seconds">00</div>
+    </div>
+    <div class="date" id="date"></div>
+  </section>
+
+  <section class="moon-section">
+    <div id="moonGraphic"></div>
+    <h1 class="phase-title" id="phaseTitle"></h1>
+    <div class="keyword" id="keyword"></div>
+    <div class="meaning" id="meaning"></div>
+    <div class="focus" id="focus"></div>
+
+    <div class="special" id="special" hidden>
+      <div class="special-title" id="specialTitle"></div>
+      <div class="special-note" id="specialNote"></div>
+    </div>
+  </section>
+</main>
+
+<script>
+const phaseContent = {
+  "New Moon": {
+    keyword: "RESET",
+    meaning: "This is quiet beginning energy. Plant the seed, even if nobody else can see it yet.",
+    focus: "Good for intentions, fresh starts, reflection and private planning."
+  },
+  "Waxing Crescent": {
+    keyword: "BUILD",
+    meaning: "The first signs of momentum are starting to show. Small consistent action matters more than dramatic leaps.",
+    focus: "Good for gentle progress, trust, early ideas and confidence building."
+  },
+  "First Quarter": {
+    keyword: "ACT",
+    meaning: "This is decision energy. If something needs doing, do it. Waiting for perfect clarity is often just fear in a nicer coat.",
+    focus: "Good for action, commitment, boundaries and momentum."
+  },
+  "Waxing Gibbous": {
+    keyword: "REFINE",
+    meaning: "The shape is forming, but it may need editing. Adjust the plan without throwing the whole thing in the bin.",
+    focus: "Good for problem solving, patience, improvement and preparation."
+  },
+  "Full Moon": {
+    keyword: "ILLUMINATE",
+    meaning: "The light is at its strongest. What has been hidden, ignored or avoided may be easier to see now.",
+    focus: "Good for clarity, release, celebration and emotional honesty."
+  },
+  "Waning Gibbous": {
+    keyword: "SHARE",
+    meaning: "The peak has passed, but the wisdom remains. This is the time to understand what the experience has taught you.",
+    focus: "Good for gratitude, communication, teaching and perspective."
+  },
+  "Last Quarter": {
+    keyword: "RELEASE",
+    meaning: "This is clearing energy. Let go of what has become heavy, stale or wildly overcomplicated.",
+    focus: "Good for endings, forgiveness, decluttering and emotional boundaries."
+  },
+  "Waning Crescent": {
+    keyword: "REST",
+    meaning: "The cycle is closing. Step back, breathe, and stop trying to force fruit from a tree that needs watering first.",
+    focus: "Good for rest, surrender, intuition and spiritual maintenance."
+  }
+};
+
+function updateTime() {
+  const now = new Date();
+
+  document.getElementById("time").textContent = now.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  });
+
+  document.getElementById("seconds").textContent = now.toLocaleTimeString("en-GB", {
+    second: "2-digit"
+  });
+
+  document.getElementById("date").textContent = now.toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+}
+
+function moonAge(date) {
+  const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14));
+  const synodicMonth = 29.530588853;
+  const daysSince = (date.getTime() - knownNewMoon.getTime()) / 86400000;
+  return ((daysSince % synodicMonth) + synodicMonth) % synodicMonth;
+}
+
+function getMoonPhase(age) {
+  if (age < 1.84566) return "New Moon";
+  if (age < 5.53699) return "Waxing Crescent";
+  if (age < 9.22831) return "First Quarter";
+  if (age < 12.91963) return "Waxing Gibbous";
+  if (age < 16.61096) return "Full Moon";
+  if (age < 20.30228) return "Waning Gibbous";
+  if (age < 23.99361) return "Last Quarter";
+  if (age < 27.68493) return "Waning Crescent";
+  return "New Moon";
+}
+
+function moonSVG(phase) {
+  const shapes = {
+    "New Moon": `
+      <circle cx="50" cy="50" r="39" fill="var(--shadow)" />
+      <circle cx="50" cy="50" r="38" fill="none" stroke="var(--moon)" stroke-width="2" opacity="0.7" />
+    `,
+    "Waxing Crescent": `
+      <circle cx="50" cy="50" r="39" fill="var(--moon)" />
+      <circle cx="36" cy="50" r="39" fill="var(--shadow)" />
+    `,
+    "First Quarter": `
+      <circle cx="50" cy="50" r="39" fill="var(--shadow)" />
+      <rect x="50" y="11" width="39" height="78" fill="var(--moon)" />
+    `,
+    "Waxing Gibbous": `
+      <circle cx="50" cy="50" r="39" fill="var(--moon)" />
+      <ellipse cx="31" cy="50" rx="18" ry="39" fill="var(--shadow)" />
+    `,
+    "Full Moon": `
+      <circle cx="50" cy="50" r="39" fill="var(--moon)" />
+    `,
+    "Waning Gibbous": `
+      <circle cx="50" cy="50" r="39" fill="var(--moon)" />
+      <ellipse cx="69" cy="50" rx="18" ry="39" fill="var(--shadow)" />
+    `,
+    "Last Quarter": `
+      <circle cx="50" cy="50" r="39" fill="var(--shadow)" />
+      <rect x="11" y="11" width="39" height="78" fill="var(--moon)" />
+    `,
+    "Waning Crescent": `
+      <circle cx="50" cy="50" r="39" fill="var(--moon)" />
+      <circle cx="64" cy="50" r="39" fill="var(--shadow)" />
+    `
+  };
+
+  return `
+    <svg class="moon-svg" viewBox="0 0 100 100" role="img" aria-label="${phase}">
+      <defs>
+        <clipPath id="moonClip">
+          <circle cx="50" cy="50" r="39" />
+        </clipPath>
+      </defs>
+
+      <g clip-path="url(#moonClip)">
+        ${shapes[phase]}
+      </g>
+
+      <circle cx="50" cy="50" r="39" fill="none" stroke="var(--moon)" stroke-width="1.5" opacity="0.55" />
+    </svg>
+  `;
+}
+
+function getSpecialMoonEvent(date, phase) {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  let fullMoons = 0;
+  let newMoons = 0;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const checkDate = new Date(year, month, d, 12, 0, 0);
+    const phaseName = getMoonPhase(moonAge(checkDate));
+
+    if (phaseName === "Full Moon") fullMoons++;
+    if (phaseName === "New Moon") newMoons++;
+  }
+
+  if (phase === "Full Moon" && fullMoons >= 2) {
+    return {
+      title: "Blue Moon Energy",
+      note: "A rare second full moon in one calendar month. Spiritually linked with amplified release, clearer truth and once-in-a-cycle opportunities."
+    };
+  }
+
+  if (phase === "New Moon" && newMoons >= 2) {
+    return {
+      title: "Black Moon Energy",
+      note: "A rare second new moon in one calendar month. Spiritually linked with deep resets, private intentions and reinvention."
+    };
+  }
+
+  return null;
+}
+
+function updateMoon() {
+  const now = new Date();
+  const phase = getMoonPhase(moonAge(now));
+  const content = phaseContent[phase];
+  const special = getSpecialMoonEvent(now, phase);
+
+  document.getElementById("moonGraphic").innerHTML = moonSVG(phase);
+  document.getElementById("phaseTitle").textContent = phase;
+  document.getElementById("keyword").textContent = content.keyword;
+  document.getElementById("meaning").textContent = content.meaning;
+  document.getElementById("focus").textContent = content.focus;
+
+  const specialBox = document.getElementById("special");
+
+  if (special) {
+    document.getElementById("specialTitle").textContent = special.title;
+    document.getElementById("specialNote").textContent = special.note;
+    specialBox.hidden = false;
+  } else {
+    specialBox.hidden = true;
+  }
+}
+
+updateTime();
+updateMoon();
+
+setInterval(updateTime, 1000);
+setInterval(updateMoon, 60 * 60 * 1000);
+</script>
+</body>
+</html>
